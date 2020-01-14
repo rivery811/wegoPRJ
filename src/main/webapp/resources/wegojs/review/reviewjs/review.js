@@ -39,7 +39,8 @@ review = (()=>{
         })
     }
     let setContentView = () => {
-		 $('#mainbody').html(main_vue.review())
+         $('#mainbody').html(main_vue.review())
+         $(main_vue.head()).appendTo('head')
     }
 
 	let move=()=>{

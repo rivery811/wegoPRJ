@@ -1,5 +1,11 @@
 var main_vue = main_vue || {}
 main_vue = {
+   head:()=>{return `
+    <head>
+   <link href="/web/resources/wegojs/review/css/agency.min.css" rel="stylesheet">
+    <link href="/web/resources/wegojs/review/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  </head>
+  `},
   review:()=>{return `	
 <div  ><button id = "create" >생성우와아아아아</button></div>
 
@@ -51,6 +57,24 @@ main_vue = {
   </div>
 
       <div id = "reviewbody" class="row" style="justify-content: center;">
+
+            <div class="col-md-4 col-sm-6 portfolio-item">
+          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
+            <div id = "movedetail" class="portfolio-hover">
+              <div class="portfolio-hover-content">
+                <i class="fas fa-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="/web/resources/wegojs/review/img/portfolio/01-thumbnail.jpg" alt="">
+          </a>
+          <div class="portfolio-caption">
+            <h4>Explore</h4>
+            <p class="text-muted">Graphic Design</p>
+          </div>
+        </div>
+
+
+
         <div class="col-md-4 col-sm-6 portfolio-item" style="padding-bottom: 20px;">
           <a class="portfolio-link" data-toggle="modal" href="#portfolioModal1">
             <div class="portfolio-hover">
@@ -120,7 +144,7 @@ main_vue = {
         <div class="col-md-4 col-sm-6 portfolio-item">
           <a class="portfolio-link" data-toggle="modal" href="#">
             <div class="portfolio-hover">
-              <div id = "movedetail" style="position: absolute;" class="portfolio-hover-content">
+              <div style="position: absolute;" class="portfolio-hover-content">
                 <i class="fas fa-plus fa-3x"></i>
               </div>
             </div>
