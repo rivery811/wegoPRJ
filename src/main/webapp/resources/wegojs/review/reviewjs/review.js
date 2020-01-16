@@ -1,9 +1,8 @@
-
 var review = review || {};
 review = (()=>{
  const WHEN_ERR = '호출하는 리뷰 js를 찾을 수 없습니다 .'
     let context, js;
-    let mainVuejs,detail,write,search;
+    let mainVuejs,detail,writejs,search;
     let reviewmainvue;
     let init = () => {
         context = $.ctx()
@@ -12,8 +11,8 @@ review = (()=>{
 		reviewmainvue=js+ '/review/vue/main_vue.js'
 		mainVuejs = js +'/vue/mainVue.js'
         detail=js+ '/review/vue/detail_vue.js'
-        write=js+ '/review/vue/write_vue.js'
         search=js+ '/review/vue/search_vue.js'
+        writejs=js+ '/review/reviewjs/write.js'
 
     }
     let onCreate = () => {
@@ -21,17 +20,19 @@ review = (()=>{
         $.when(
 			$.getScript(mainVuejs),
             $.getScript(detail),
-            $.getScript(write),
+            $.getScript(writejs),        
             $.getScript(search),
-		
-			$.getScript(reviewmainvue),	
+			$.getScript(reviewmainvue)	
 
         ).done(() => {   
             setContentView()
-            move()
+            
+ 
             movewrite()
             movesearch()
             make()
+            crw()
+    
            
             
         }).fail(() => {
@@ -39,45 +40,157 @@ review = (()=>{
         })
     }
     let setContentView = () => {
-		 $('#mainbody').html(main_vue.review())
+         recent_list({pageNo: 1 })
+         $(main_vue.head()).appendTo('head')
     }
 
-	let move=()=>{
-		$('#movedetail').click(e=>{
-			e.preventDefault()
-			 $('#reviewbody').html(detail_vue.detail())
+    let recent_list=x=>{
+       $('#mainbody').html(main_vue.review())
+       $.getJSON(context+'/review/list/'+x.pageNo,d=>{
 
+           $.each(d.review,(i,j)=>{
+               $(`<div class="col-md-4 col-sm-6 portfolio-item">
+          <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
+            <div id="id${i}" class="portfolio-hover">
+              <div class="portfolio-hover-content">
+                <i class="fas fa-plus fa-3x"></i>
+              </div>
+            </div>
+            <img style="width:100%;"class="img-fluid" src=${j.img} alt="">
+          </a>
+          <div class="portfolio-caption">
+            <h4>${j.title}</h4>
+          </div>
+        </div>`).appendTo('#reviewbody')
+        $('#id'+i).click(e=>{
+            e.preventDefault()
+            alert('디테일')
+            $('#reviewbody').empty()
+			 $(`<div style="display: block; padding-right: 17px; width: 70%; text-align: center; border: solid #d4d4d4;">
+                  <h2 class="text-uppercase">${j.title}</h2>
+              <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+              <img class="img-fluid d-block mx-auto" src=${j.img} alt="">
+              <p>${j.content}</p>           
+              <div style=" padding-left: 10px;">
+                <input type="text" style="width:100%" />
+                <a href="#" class="genric-btn primary small" style="width:100%">댓글달기</a>
+              </div>
+              <div style="text-align: initial; padding-left: 15px; padding-top: 9px; padding-bottom: 10px;">
+                <li>a;lkdsjflakhgi;law</li>
+                <li>ahgl;aksgk;lsadghlksadghs</li>
+                <li>aldjghlaskdjhgljksadghsadkjgh</li>
+              </div>                
+              </div>`).appendTo('#reviewbody')
 
+            })
+
+           })  
+   
         })
+        $(window).scroll(function() {
+            
+            
+            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+               
+            //let page=parseInt(x.pageNo)+1  
+            //recent_list({pageNo:parseInt(x.pageNo)+1 })        
+            }
+          
+        })  
+
+
     }
+
+
 
     let movewrite=()=>{
-        $('#gowrite').click(()=>{
-            alert('글쓰기')
-        $('#reviewbody').html(write_vue.write())
+        $('#gowrite').click(e=>{
+            e.preventDefault()
+            write.onCreate()
+        
         })
     }
 
         let movesearch=()=>{
-        $('#searchbtn').click(()=>{
-            alert('서치 ')
-        $('#reviewbody').empty()
-        $(search_vue.search()).appendTo('#reviewbody')
+        $('#searchbtn').click(e=>{
+            e.preventDefault()
+            
+            $.getJSON(context+'/review/search/'+$('#searchword').val(),d=>{
+                alert('서치 '+d.title)
+                $('#reviewbody').empty()
+                 $.each(d,(i,j)=>{
+                 $(`<div class="col-md-4 col-sm-6 portfolio-item">
+                    <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
+                        <div id="id${i}" class="portfolio-hover">
+                        <div class="portfolio-hover-content">
+                            <i class="fas fa-plus fa-3x"></i>
+                        </div>
+                        </div>
+                        <img style="width:100%;"class="img-fluid" src=${j.img} alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>${j.title}</h4>
+                    </div>
+                    </div>`).appendTo('#reviewbody')
+                    $('#id'+i).click(e=>{
+                    e.preventDefault()
+                    alert('디테일')
+              $('#reviewbody').empty()
+			 $(`<div style="display: block; padding-right: 17px; width: 70%; text-align: center; border: solid #d4d4d4;">
+                  <h2 class="text-uppercase">${j.title}</h2>
+              <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+              <img class="img-fluid d-block mx-auto" src=${j.img} alt="">
+              <p>${j.content}</p>           
+              <div style=" padding-left: 10px;">
+                <input type="text" style="width:100%" />
+                <a href="#" class="genric-btn primary small" style="width:100%">댓글달기</a>
+              </div>
+              <div style="text-align: initial; padding-left: 15px; padding-top: 9px; padding-bottom: 10px;">
+                <li>a;lkdsjflakhgi;law</li>
+                <li>ahgl;aksgk;lsadghlksadghs</li>
+                <li>aldjghlaskdjhgljksadghsadkjgh</li>
+              </div>                
+              </div>`).appendTo('#reviewbody')
+
+                })
+
+                 })
+
+
+            
+            })
+
+        
 
         })
     }
+
+
+
      let make =()=>{
          $('#create').click(()=>{
              $.getJSON(context+'/review/create/table',d=>{
                  alert("성공!!"+d.msg)
              })
+        })
+     }
+     
+     let crw =()=>{
+         $('#crawling').click(()=>{
+             $.getJSON(context+'/review/crawler',d=>{
+                 alert("성공!!")
+             })
+        })
+     }
+/*      let getlist=()=>{
 
-
-
+          $('#list').click(()=>{
+             $.getJSON(context+'/review/list',d=>{
+                 alert("성공!!")
+             })
         })
 
-     }
-
+     } */
 
     return { onCreate }
 
