@@ -62,6 +62,7 @@
 <script src="<%=application.getContextPath()%>/resources/wegojs/tourizm/tourizmVue.js"></script>
 
 <script src="<%=application.getContextPath()%>/resources/wegojs/review/reviewjs/review.js"></script>
+<script src="<%=application.getContextPath()%>/resources/wegojs/review/reviewjs/write.js"></script>
 <script src="<%=application.getContextPath()%>/resources/wegojs/review/vue/main_vue.js"></script>
 <script src="<%=application.getContextPath()%>/resources/wegojs/review/vue/detail_vue.js"></script>
 <script src="<%=application.getContextPath()%>/resources/wegojs/review/vue/write_vue.js"></script>
