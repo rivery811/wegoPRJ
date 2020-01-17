@@ -21,6 +21,9 @@
 	<select id="reviewlist" parameterType="int" resultType="com.wego.web.review.Review">
 		SELECT * FROM community WHERE boardtype LIKE 'review' ORDER BY artseq desc Limit #{startRow}, #{pageSize}
 	</select>
+	<select id="allreviewlist"  resultType="com.wego.web.review.Review">
+		SELECT * FROM community WHERE boardtype LIKE 'review' ORDER BY artseq desc 
+	</select>
     
     <insert id="insertReview" parameterType="com.wego.web.review.Review">
     	insert into community(IMG,UID,COMMENTS,RATING,BOARDTYPE,TITLE,CONTENT) values

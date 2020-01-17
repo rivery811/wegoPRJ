@@ -6,12 +6,13 @@ main_vue = {
     <head>
    <link href="/web/resources/wegojs/review/css/agency.min.css" rel="stylesheet">
     <link href="/web/resources/wegojs/review/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  </head>
+   
+    </head>
   `},
   review:()=>{return `	
 <div  ><button id = "create" >생성우와아아아아</button></div>
 <div  ><button id = "crawling" >crawling</button></div>
-<div  ><button id = "list" >list</button></div>
+
 
 
 
@@ -66,7 +67,7 @@ main_vue = {
     </aside>
   </div>
 
-      <div id = "reviewbody" class="row" style="justify-content: center;">
+      <div id = "reviewbody" class="row" style="justify-content: center; ">
      </div>
     </div> 
   </section>

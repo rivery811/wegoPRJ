@@ -15,70 +15,42 @@ write=(()=>{
 			$.getScript(reviewjs)
 		).done(()=>{
 			setContentView()
-			write()
+			
 		}).fail(()=>{
 
 		})
 	}
-	let setContentView=()=>{
-		
+	let setContentView=()=>{		
 		$('#reviewbody').html(write_vue.write())
+		write()
 	}
-	let write =()=>{
 
-		$('#content')
-		.on("dragover", dragOver)
-		.on("dragleave", dragOver)
-		.on("drop", uploadFiles);
- 
-		function dragOver (e){
-		e.stopPropagation();
-		e.preventDefault();
-		if (e.type == "dragover") {
-        $(e.target).css({
-            "background-color": "skyblue",
-            "outline-offset": "-20px"
-        });
-		} else {
-			$(e.target).css({
-				"background-color": "lightgray",
-				"outline-offset": "-10px"
-			});
-		}
-		}
+	let write=()=>{
+		$(window).unbind('scroll');
+
+		var uploadFiles = [];
 		
-		function uploadFiles(e) {
+		$("#drop").on('dragenter', function(e) { //드래그 요소가 들어왔을떄
+			$(this).addClass('drag-over');
+		}).on('dragleave', function(e) { //드래그 요소가 나갔을때
+			$(this).removeClass('drag-over');
+		}).on('dragover', function(e) {
 			e.stopPropagation();
 			e.preventDefault();
-			dragOver(e); 
-		
-			e.dataTransfer = e.originalEvent.dataTransfer; 
-			var files = e.target.files || e.dataTransfer.files;
-		
-			if (files.length > 1) {
-				alert('하나만 올려라.');
-				return;
+		}).on('drop', function(e) { //드래그한 항목을 떨어뜨렸을때
+			e.preventDefault();
+			$(this).removeClass('drag-over');
+			var files = e.originalEvent.dataTransfer.files; //드래그&드랍 항목
+			for(var i = 0; i < files.length; i++) {
+			var file = files[i];
+			var size = uploadFiles.push(file); //업로드 목록에 추가
+				preview(file, size - 1); //미리보기 만들기
 			}
 
-			if (files[0].type.match(/image.*/)) {
-				$(e.target).html(`<img  src=" `+ window.URL.createObjectURL(files[0])+`" alt=""></img>`)
-				$(`<img  src=" `+ window.URL.createObjectURL(files[0])+`" style="width:30px; height:30px"></img>`).appendTo(e.target)
-
-			}else{
-			alert('이미지가 아닙니다.');
-			return;
-			}
-			
-
-
-
-
-					
-		$('#writebtn').click(e=>{
+			$('#writebtn').click(e=>{
 			e.preventDefault();
 			alert('글쓰기')
 			let json = {
-				img:window.URL.createObjectURL(files[0]),
   				title : $('#form_write input[name="title"]').val(),
 				content : $('#form_write textarea[name="content"]').val(),
 				boardtype:'review'
@@ -90,6 +62,18 @@ write=(()=>{
 				dataType:'json',
 				contentType:'application/json',
 				success:d=>{
+				let formData = new FormData()
+				formData.append('uploadFile',file)
+				$.ajax({
+					url: context+'/review/fileupload',
+					data : formData,
+					type : 'POST',
+					contentType : false,
+					processData: false,
+					success : d=> {
+						alert("완료");
+					}
+				})
 					review.onCreate()
 				},
 				error:e=>{
@@ -98,11 +82,36 @@ write=(()=>{
 			})
 		})
 
-
+		function preview(file, idx) {
+			var reader = new FileReader();
+			reader.onload = (function(f, idx) {
+			return function(e) {
+			var div = `<div class="thumb" style="width:100px; height:80px"> <div class="close" data-idx=${idx}>X</div> 
+				<img src=${e.target.result} style="width:50px; height:50px" /> </div>`;
+			$(div).appendTo('#thumbnails')
+			};
+			})(file, idx);
+			reader.readAsDataURL(file);
 		}
+	
+	});
+		$("#thumbnails").on("click", ".close", function(e) {
+		var $target = $(e.target);
+		var idx = $target.attr('data-idx');
+		uploadFiles[idx].upload = 'disable'; //삭제된 항목은 업로드하지 않기 위해 플래그 생성
+		$target.parent().remove(); //프리뷰 삭제
+		});
+
 
 
 	}
+
+	
+
+
+
+
+
 	return{onCreate}
 
 })();

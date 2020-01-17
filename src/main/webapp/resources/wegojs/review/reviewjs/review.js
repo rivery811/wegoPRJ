@@ -40,18 +40,31 @@ review = (()=>{
         })
     }
     let setContentView = () => {
-         recent_list({pageNo: 1 })
-         $(main_vue.head()).appendTo('head')
+        $('#mainbody').empty()
+        $(main_vue.review()).appendTo('#mainbody')
+        recent_list({pageNo: 1 }) 
+        scroll()      
+        $(main_vue.head()).appendTo('head')
+    }
+    let scroll=()=>{
+        let count =1;
+         $(window).scroll(function() {           
+            if ($(document).height() - $(this).height() - 100 < $(this).scrollTop()) {
+            count++;
+            recent_list({pageNo:count})        
+            }          
+        })
     }
 
+
     let recent_list=x=>{
-       $('#mainbody').html(main_vue.review())
-       $.getJSON(context+'/review/list/'+x.pageNo,d=>{
+   
+        $.getJSON(context+'/review/list/'+x.pageNo,d=>{
 
            $.each(d.review,(i,j)=>{
                $(`<div class="col-md-4 col-sm-6 portfolio-item">
           <a class="portfolio-link" data-toggle="modal" href="#portfolioModal2">
-            <div id="id${i}" class="portfolio-hover">
+            <div id="id${j.artseq}" class="portfolio-hover">
               <div class="portfolio-hover-content">
                 <i class="fas fa-plus fa-3x"></i>
               </div>
@@ -62,11 +75,12 @@ review = (()=>{
             <h4>${j.title}</h4>
           </div>
         </div>`).appendTo('#reviewbody')
-        $('#id'+i).click(e=>{
+        $('#id'+j.artseq).click(e=>{
             e.preventDefault()
             alert('디테일')
+            $('html').scrollTop(0);
             $('#reviewbody').empty()
-			 $(`<div style="display: block; padding-right: 17px; width: 70%; text-align: center; border: solid #d4d4d4;">
+			 $(`<div style="display: block; padding-top:20px; padding-right: 17px; width: 70%; text-align: center; border: solid #d4d4d4;">
                   <h2 class="text-uppercase">${j.title}</h2>
               <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
               <img class="img-fluid d-block mx-auto" src=${j.img} alt="">
@@ -81,23 +95,13 @@ review = (()=>{
                 <li>aldjghlaskdjhgljksadghsadkjgh</li>
               </div>                
               </div>`).appendTo('#reviewbody')
-
+              $(window).unbind('scroll');
             })
 
            })  
    
         })
-        $(window).scroll(function() {
-            
-            
-            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-               
-            //let page=parseInt(x.pageNo)+1  
-            //recent_list({pageNo:parseInt(x.pageNo)+1 })        
-            }
-          
-        })  
-
+       
 
     }
 
@@ -182,15 +186,7 @@ review = (()=>{
              })
         })
      }
-/*      let getlist=()=>{
 
-          $('#list').click(()=>{
-             $.getJSON(context+'/review/list',d=>{
-                 alert("성공!!")
-             })
-        })
-
-     } */
 
     return { onCreate }
 

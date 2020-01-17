@@ -6,21 +6,20 @@ write_vue ={
           <input name="title" type="text" style = "width:100%;"/>
         </div>
 
+        <form  id="writeform">     
+          <input  id="drop" placeholder="여기로 drag & drop"style="border: 1px solid #d4d4d4; width:65%; height:80px; padding:3px">          
+          </input>
+          <div id="thumbnails"style="border: 1px solid #d4d4d4; width:75%; height:100px; padding:3px;writing-mode: vertical-lr;">
+          </div>
+        </form>
 
-      <div id="content" style="padding: 10px; width: 80%;border: solid #d4d4d4;height:300px; padding:3px"></div>
-
-
-
-
-       <div id="imgspace" >
-               
-            <div id="thumbnails"> </div>
-        </div>
         <div style="padding: 10px;width:100%;">
                   <textarea name="content" style= "width: 80%;"  cols="30" rows="20"></textarea>
         </div>        
                 <button id="writebtn" class="btn btn-primary" data-dismiss="modal" type="button"> write</button>
      </div>
 
+
+  
 	`}
 }

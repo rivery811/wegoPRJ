@@ -27,7 +27,8 @@ public class ReviewCrawling extends Proxy{
 	
 	@Transactional
 	public ArrayList<HashMap<String,String>> reviewCrawing(){
-		String url = "https://store.naver.com/accommodations/detail?entry=pbl&id=37270680&matchSidRoomIds=3094845%2C3094846%2C3094854%2C3094964&query=%ED%8C%8C%EC%9D%B8%ED%9E%90%EC%95%A0%EA%B2%AC%ED%8E%9C%EC%85%98&tab=fsasReview";
+		//
+		String url = "https://store.naver.com/accommodations/detail?entry=pbl&id=1382820761&matchSidRoomIds=3120404%2C3120405%2C3114205%2C3120407%2C3120961%2C3121051%2C3121055%2C3121057%2C3121061%2C3121062%2C3113848%2C3120409%2C3120410%2C3121159%2C3121064%2C3121096%2C3121099%2C3114064%2C3120401&query=%ED%95%98%EB%A3%A8%EA%B0%95%EC%95%84%EC%A7%80%EC%95%A0%EA%B2%AC%ED%8E%9C%EC%85%98&tab=fsasReview";
 		inventory.clear();
 		
 		try {

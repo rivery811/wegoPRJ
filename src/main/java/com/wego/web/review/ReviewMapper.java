@@ -12,6 +12,7 @@ public interface ReviewMapper {
 	public void truncateReview(HashMap<String, String> paramMap);
 	public void insertReview(Review r);
 	public List<Review> reviewlist(ReviewProxy pxy);
+	public List<Review> allreviewlist();
 	public int countCommunity();
 	
 

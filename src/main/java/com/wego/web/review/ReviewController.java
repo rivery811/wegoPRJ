@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.wego.web.proxy.Inventory;
 
@@ -26,7 +27,7 @@ public class ReviewController {
 	@Autowired ReviewCrawling reviewCrawler;
 	@Autowired Inventory<Review[]> inventory;
 	@Autowired ReviewProxy reviewProxy;
-	
+	@Autowired FileProxy fileProxy;	
 	
     @GetMapping("/create/table")
     public Map<?,?> createReview(){
@@ -60,22 +61,25 @@ public class ReviewController {
 
 	@GetMapping("/search/{searchword}")
 	public Review[] search(@PathVariable String searchword){	
-		return reviewMapper.reviewlist(reviewProxy).stream()
+		return reviewMapper.allreviewlist().stream()
 				.filter(t->t.getTitle().contains(searchword)||t.getContent().contains(searchword)).toArray(Review[]::new);
 	}
 	
-	@PostMapping("write")
+	@PostMapping("/write")
 	public Map<?,?> write(@RequestBody Review param){
 		HashMap<String,String> map = new HashMap<>();
 		System.out.println("글쓰기 컨트롤러"+param.getTitle());
 		System.out.println("글쓰기 컨트롤러"+param.getBoardtype());
 		Consumer<Review> c = s->reviewMapper.insertReview(param);
-		c.accept(param);
-		
-		
-		
-		
+		c.accept(param);	
 		return map;
 	}
+	
+	@PostMapping("/fileupload")
+    public void fileupload(MultipartFile [] uploadFile) {
+		System.out.println("파일 업로드");
+		//System.out.println(uploadFile[0].getName());
+		fileProxy.fileupload(uploadFile);
+    }
 
 }
